@@ -1,23 +1,22 @@
 package cn.wq.persistence.sql.jdbc.bean;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/17 10:55
- * @Desc: SQL Union/UnionAll操作
+ * @author 万强
  * @version 1.0
+ * @date 2019/12/13 09:50
+ * @desc updateSQL中的set参数
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseUnion {
+public class SetParam {
 
-    private UnionType unionType;
+    private String key;
 
-    private QuerySQL sql;
+    private Object value;
 }
+ 

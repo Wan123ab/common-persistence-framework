@@ -19,5 +19,5 @@ public class BaseExists {
 
     private ExistsType existsType;
 
-    private SQL sql;
+    private QuerySQL sql;
 }

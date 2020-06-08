@@ -27,7 +27,8 @@ public class TestQuerySQL {
 
     @Test
     public void select() {
-        SQL sql = new SQL().select(new User()::getAge).from(User.class).where(new User()::getName, "张三");
+        SQL sql = new SQL().buildQuerySQL()
+                .select(new User()::getAge).from(User.class).where(new User()::getName, "张三");
 
         SQLWrapper sqlWrapper = buildSql(sql);
 
@@ -38,7 +39,8 @@ public class TestQuerySQL {
     @Test
     public void selectSub() {
 
-        SQL sql = new SQL().select(new User()::getAge, new Car()::getBrand, new User()::getName)
+        SQL sql = new SQL().buildQuerySQL()
+                .select(new User()::getAge, new Car()::getBrand, new User()::getName)
                 .from(User.class, Car.class)
                 .where(new User()::getId, new Car()::getUserId)
                 .and(new User()::getName, "张三")
@@ -57,7 +59,8 @@ public class TestQuerySQL {
     @Test
     public void selectJoin() {
 
-        SQL sql = new SQL().select(new User()::getAge, new Car()::getBrand, new User()::getName, new House()::getHouseAddr)
+        SQL sql = new SQL().buildQuerySQL()
+                .select(new User()::getAge, new Car()::getBrand, new User()::getName, new House()::getHouseAddr)
                 .from(User.class)
                 .leftJoin(new Join().with(Car.class).on(new User()::getId, new Car()::getUserId))
                 .rightJoin(new Join().with(House.class).on(new User()::getId, new House()::getUserId))
@@ -76,7 +79,8 @@ public class TestQuerySQL {
     @Test
     public void selectUnion() {
 
-        SQL sql = new SQL().select(User::new)
+        SQL sql = new SQL().buildQuerySQL()
+                .select(User::new)
                 .from(User.class)
                 .leftJoin(new Join().with(Car.class).on(new User()::getId, new Car()::getUserId))
                 .rightJoin(new Join().with(House.class).on(new User()::getId, new House()::getUserId))
@@ -102,7 +106,8 @@ public class TestQuerySQL {
     @Test
     public void selectAllField() {
 
-        SQL sql = new SQL().select(User::new, new Car()::getBrand, new House()::getHouseAddr)
+        SQL sql = new SQL().buildQuerySQL()
+                .select(User::new, new Car()::getBrand, new House()::getHouseAddr)
                 .from(User.class)
                 .leftJoin(new Join().with(Car.class).on(new User()::getId, new Car()::getUserId))
                 .rightJoin(new Join().with(House.class).on(new User()::getId, new House()::getUserId))
@@ -121,7 +126,8 @@ public class TestQuerySQL {
     @Test
     public void selectAndExists() {
 
-        SQL sql = new SQL().select(User::new, new Car()::getBrand, new House()::getHouseAddr)
+        SQL sql = new SQL().buildQuerySQL()
+                .select(User::new, new Car()::getBrand, new House()::getHouseAddr)
                 .from(User.class)
                 .leftJoin(new Join().with(Car.class).on(new User()::getId, new Car()::getUserId))
                 .rightJoin(new Join().with(House.class).on(new User()::getId, new House()::getUserId))
@@ -131,8 +137,8 @@ public class TestQuerySQL {
                 .andLike(new Car()::getBrand ,LikeType.LIKE, "大众斯柯达")
                 .andLike(new Car()::getColor,LikeType.RIGHT_LIKE, "黑色")
                 .andIfAbsent(new Car()::getUserId, "")
-                .andExists(new SQL().select("1").from(House.class).where(new User()::getId, new House()::getUserId))
-                .andNotExists(new SQL().select("1").from(House.class).where(new User()::getId, new House()::getUserId))
+                .andExists(new SQL().buildQuerySQL().select("1").from(House.class).where(new User()::getId, new House()::getUserId))
+                .andNotExists(new SQL().buildQuerySQL().select("1").from(House.class).where(new User()::getId, new House()::getUserId))
                 .orderBy(new Sort(new Car()::getCreateDate));
 
 
@@ -144,12 +150,13 @@ public class TestQuerySQL {
     @Test
     public void selectWhereExists() {
 
-        SQL sql = new SQL().select(User::new, new Car()::getCreateDate, new House()::getUpdateDate)
+        SQL sql = new SQL().buildQuerySQL()
+                .select(User::new, new Car()::getCreateDate, new House()::getUpdateDate)
                 .from(User.class)
                 .leftJoin(new Join().with(Car.class).on(new User()::getId, new Car()::getUserId))
                 .rightJoin(new Join().with(House.class).on(new User()::getId, new House()::getUserId))
-                .whereExists(new SQL().select("1").from(House.class).where(new User()::getId, new House()::getUserId))
-                .andNotExists(new SQL().select("1").from(House.class).where(new User()::getId, new House()::getUserId))
+                .whereExists(new SQL().buildQuerySQL().select("1").from(House.class).where(new User()::getId, new House()::getUserId))
+                .andNotExists(new SQL().buildQuerySQL().select("1").from(House.class).where(new User()::getId, new House()::getUserId))
                 .orderBy(new Sort(new Car()::getCreateDate));
 
         SQLWrapper sqlWrapper = buildSql(sql);
@@ -210,7 +217,9 @@ public class TestQuerySQL {
                 .withCriteria(new Criteria().where("g", "h").andIsNull("e").or("f", ">", "1"))
                 .orCriteria(new Criteria().where("a", "b").and("c", "d"));
 
-        SQL sql = new SQL().select(new Car()::getBrand,new User()::getName).from(User.class)
+        SQL sql = new SQL().buildQuerySQL()
+                .select(new Car()::getBrand,new User()::getName)
+                .from(User.class)
                 .leftJoin(new Join().with(Car.class).on(new User()::getId, new Car()::getUserId))
                 .whereCriteria(criteria);
 
@@ -225,7 +234,7 @@ public class TestQuerySQL {
         Criteria criteria = new Criteria().where("g", "h").andIsNull("e").or("f", ">", "1")
                 .orCriteria(new Criteria().where("a", "b").and("c", "d"));
 
-        SQL sql = new SQL().select(new Car()::getBrand,new User()::getName).from(Car.class, User.class)
+        SQL sql = new SQL().buildQuerySQL().select(new Car()::getBrand,new User()::getName).from(Car.class, User.class)
                 .where(new Car()::getUserId, new User()::getId)
                 .andCriteria(criteria);
 

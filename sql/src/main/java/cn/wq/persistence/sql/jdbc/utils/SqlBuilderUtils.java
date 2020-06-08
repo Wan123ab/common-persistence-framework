@@ -45,7 +45,7 @@ public class SqlBuilderUtils {
         SQLWrapper sqlWrapper = null;
         switch (sqlType) {
             case SELECT:
-                sqlWrapper = buildQuerySql(sql);
+                sqlWrapper = buildQuerySql((QuerySQL) sql);
                 break;
             case INSERT:
                 break;
@@ -65,14 +65,14 @@ public class SqlBuilderUtils {
      * @param sql
      * @return
      */
-    public static SQLWrapper buildQuerySql(SQL sql) {
+    public static SQLWrapper buildQuerySql(QuerySQL sql) {
         StringBuffer sb = new StringBuffer();
         List params = Lists.newArrayList();
 
         List<BaseUnion> unions = Lists.newArrayList();
 
         //1、递归封装BaseUnion
-        SQL tmp = sql;
+        QuerySQL tmp = sql;
 
         while (tmp.getSqlChild() != null) {
             tmp = tmp.getSqlChild();
@@ -104,7 +104,7 @@ public class SqlBuilderUtils {
      * @param sb
      * @param params
      */
-    public static void resolveQuerySql(SQL sql, StringBuffer sb, List params) {
+    public static void resolveQuerySql(QuerySQL sql, StringBuffer sb, List params) {
 
         /**
          * 拼接SQL 操作符
