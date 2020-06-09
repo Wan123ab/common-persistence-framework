@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @version 1.0
- * @auther 万强
+ * @author 万强
  * @date 2019/9/4 20:05
  * @desc Collection工具类
  */

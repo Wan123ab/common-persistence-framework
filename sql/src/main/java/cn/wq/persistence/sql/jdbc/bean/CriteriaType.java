@@ -1,9 +1,9 @@
 package cn.wq.persistence.sql.jdbc.bean;
 
 /**
- * @Auther: wanqiang
- * @Date: 2019/7/23 19:37
- * @Desc: Criteria拼接类型
+ * @author: wanqiang
+ * @date: 2019/7/23 19:37
+ * @desc: Criteria拼接类型
  * @Version: 1.0
  */
 public enum CriteriaType {

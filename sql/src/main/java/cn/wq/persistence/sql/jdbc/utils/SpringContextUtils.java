@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * 此Bean需要通过{@link org.springframework.context.annotation.Import}导入容器才能注入ApplicationContext
  *
- * @auther : 万强
+ * @author : 万强
  * @date : 2019/6/3 15:16
  * @desc : SpringContextUtils工具类
  * @version : 1.0

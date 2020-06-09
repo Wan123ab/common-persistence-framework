@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/18 10:41
- * @Description:
+ * @author: 万强
+ * @date: 2019/7/18 10:41
+ * @description:
  * @Version 1.0
  */
 @Data

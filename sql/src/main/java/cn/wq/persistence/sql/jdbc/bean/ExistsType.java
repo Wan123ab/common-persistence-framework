@@ -1,9 +1,9 @@
 package cn.wq.persistence.sql.jdbc.bean;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/19 16:08
- * @Description: EXITS操作类型枚举
+ * @author: 万强
+ * @date: 2019/7/19 16:08
+ * @description: EXITS操作类型枚举
  * @Version 1.0
  */
 public enum  ExistsType {

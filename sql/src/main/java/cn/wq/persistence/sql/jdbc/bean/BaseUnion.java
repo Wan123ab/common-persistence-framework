@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/17 10:55
- * @Desc: SQL Union/UnionAll操作
+ * @author: 万强
+ * @date: 2019/7/17 10:55
+ * @desc: SQL Union/UnionAll操作
  * @version 1.0
  */
 @Data

@@ -3,7 +3,7 @@ package cn.wq.persistence.common.util;
 import org.springframework.beans.BeanUtils;
 
 /**
- * @auther 万强
+ * @author 万强
  * @date 2019/8/8 19:13
  * @desc Bean操作工具类
  * @version 1.0

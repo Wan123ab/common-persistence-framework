@@ -12,9 +12,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/17 16:36
- * @Desc: 反射工具类
+ * @author: 万强
+ * @date: 2019/7/17 16:36
+ * @desc: 反射工具类
  * @version  1.0
  */
 public class ReflectionUtils {

@@ -10,9 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/17 11:09
- * @Description: 分页查询返回结果
+ * @author: 万强
+ * @date: 2019/7/17 11:09
+ * @description: 分页查询返回结果
  * @Version 1.0
  */
 @Data

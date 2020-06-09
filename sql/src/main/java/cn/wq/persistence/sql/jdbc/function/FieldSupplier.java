@@ -16,9 +16,10 @@ import java.util.function.Supplier;
 /**
  * 函数式接口，用于封装和解析用lamda表达式（函数引用）表示的字段入参，如User::getId
  * 更加面向对象，同时使用者无需关心该字段具体对应的表列名
+ *
  * @param <T>
  * @Version 1.0
- * @Date 2019-7-17 下午5:31
+ * @date 2019-7-17 下午5:31
  */
 @FunctionalInterface
 public interface FieldSupplier<T> extends Serializable, Supplier<T> {
@@ -104,6 +105,7 @@ public interface FieldSupplier<T> extends Serializable, Supplier<T> {
 
     /**
      * 根据指定lamda获取表名.列名
+     *
      * @param lambda
      * @return
      */
@@ -146,28 +148,30 @@ public interface FieldSupplier<T> extends Serializable, Supplier<T> {
 
     /**
      * 根据指定lamda获取表名.列名+别名，用于查询出结果集RS后与POJO进行映射，如 house.house_addr as houseAddr
+     *
      * @param lambda
      * @return
      */
     static <T> String getColumnNameAndAliasByField(FieldSupplier<T> lambda) {
         try {
             Method method = lambda.getClass().getDeclaredMethod("writeReplace");
-              method.setAccessible(Boolean.TRUE);
-              SerializedLambda serializedLambda = (SerializedLambda) method.invoke(lambda);
-              String getter = serializedLambda.getImplMethodName();
+            method.setAccessible(Boolean.TRUE);
+            SerializedLambda serializedLambda = (SerializedLambda) method.invoke(lambda);
+            String getter = serializedLambda.getImplMethodName();
 
-              // 获取字段名
-              String fieldName = Introspector.decapitalize(getter.replace("get", ""));
+            // 获取字段名
+            String fieldName = Introspector.decapitalize(getter.replace("get", ""));
 
-              /**
+            /**
              * 此处判断是否引用构造方法，如果是代表查询该类的所有字段
              */
-            if("<init>".equalsIgnoreCase(fieldName)){
+            if ("<init>".equalsIgnoreCase(fieldName)) {
+
+                //返回user.*，最好不要这么查，因为无法做属性名和列名的映射
+//                getAllColumnName
 
                 //返回user.id as id, user.name as name ...
-//                return getAllColumnNameAndAlias(lambda.get());
-                //返回user.*
-                return getAllColumnName(lambda.get());
+                return getAllColumnNameAndAlias(lambda.get());
             }
 
             /**
@@ -202,6 +206,7 @@ public interface FieldSupplier<T> extends Serializable, Supplier<T> {
 
     /**
      * 获取指定对象的所有字段对应表名.列名+别名
+     *
      * @param t
      * @param <T>
      * @return
@@ -214,6 +219,7 @@ public interface FieldSupplier<T> extends Serializable, Supplier<T> {
 
     /**
      * 获取指定对象的所有字段对应表名.列名+别名
+     *
      * @param t
      * @param <T>
      * @return
@@ -223,18 +229,21 @@ public interface FieldSupplier<T> extends Serializable, Supplier<T> {
     }
 
     /**
-     * 获取clz所有标注有@Column的Field名+"as"+别名
+     * 获取clz所有标注有@Column的TableName.Field名+"as"+别名，如user.first_name as firstName
+     *
      * @param clz
      * @param <T>
      * @return
      */
     static <T> String getAllColumnNameAndAlias(Class<T> clz) {
         List<Field> fields = ReflectionUtils.getAllFieldsAnnotation(clz, Column.class);
+        String tableName = EntityUtils.getTableName(clz);
         StringBuffer sb = new StringBuffer();
 
         fields.forEach(field -> {
             //列注解默认@Column，如果是自定义注解，需在此处进行修改
             Column annotation = field.getAnnotation(Column.class);
+            sb.append(tableName).append(".");
             if (StringUtils.isEmpty(annotation.name())) {
                 sb.append(field.getName()).append(" as ").append(field.getName());
             } else {
@@ -243,13 +252,12 @@ public interface FieldSupplier<T> extends Serializable, Supplier<T> {
             sb.append(", ");
         });
 
-        if(sb.length() >= 2){
+        if (sb.length() >= 2) {
             sb.setLength(sb.length() - 2);
         }
 
         return sb.toString();
     }
-
 
 
 }

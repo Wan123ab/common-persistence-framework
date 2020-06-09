@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 /**
  * @version 1.0
- * @auther 万强
+ * @author 万强
  * @date 2019/8/8 19:31
  * @desc jdk8 Lambda工具类
  */

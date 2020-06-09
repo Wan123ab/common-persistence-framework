@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/19 16:07
- * @Description: SQL EXISTS操作封装
+ * @author: 万强
+ * @date: 2019/7/19 16:07
+ * @description: SQL EXISTS操作封装
  * @Version 1.0
  */
 @Data

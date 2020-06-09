@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 /**
  * @version 1.0
- * @auther 万强
+ * @author 万强
  * @date 2019/10/3 10:49
  * @desc 异常工具类
  */

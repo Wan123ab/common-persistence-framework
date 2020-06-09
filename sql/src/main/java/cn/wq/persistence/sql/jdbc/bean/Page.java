@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/26 下午2:02
- * @Description: Page分页对象
+ * @author: 万强
+ * @date: 2019/7/26 下午2:02
+ * @description: Page分页对象
  * @Version 1.0
  */
 @Data

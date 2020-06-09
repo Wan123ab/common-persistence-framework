@@ -5,9 +5,9 @@ import cn.wq.persistence.sql.jdbc.function.FieldSupplier;
 import lombok.Data;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/17 09:33
- * @Description: SQL Join封装
+ * @author: 万强
+ * @date: 2019/7/17 09:33
+ * @description: SQL Join封装
  * @Version 1.0
  */
 @Data
@@ -43,78 +43,28 @@ public class Join {
 
     }
 
-    public class As {
+    public class As extends BaseJoin {
 
-        public On on(String field1, String field2) {
+        public As on(String field1, String field2) {
             joinSQL.append(" ON ").append(field1).append(" = ").append(field2).append(" ");
-            return new On();
+            return this;
         }
 
-        public <T> On on(FieldSupplier<T> supplier1, FieldSupplier<T> supplier2) {
+        public <T> As on(FieldSupplier<T> supplier1, FieldSupplier<T> supplier2) {
             joinSQL.append(" ON ").append(supplier1.getColumnNameByFieldDefault()).append(" = ").append(supplier2.getColumnNameByFieldDefault()).append(" ");
-            return new On();
+            return this;
+        }
+
+        public As and(String field1, String field2) {
+            joinSQL.append(" AND ").append(field1).append(" = ").append(field2).append(" ");
+            return this;
+        }
+
+        public <T> As and(FieldSupplier<T> supplier1, FieldSupplier<T> supplier2) {
+            joinSQL.append(" AND ").append(supplier1.getColumnNameByFieldDefault()).append(" = ").append(supplier2.getColumnNameByFieldDefault()).append(" ");
+            return this;
         }
     }
-
-
-    public class On extends BaseJoin {
-
-//        public Where where(String key, Object value) {
-//            return where(key, "=", value);
-//        }
-//
-//        public Where where(String key, String opt, Object value) {
-//            joinSQL.append(" WHERE " + key + " " + opt + " " + value);
-//            return new Where();
-//        }
-//
-//        public <T> Where where(FieldSupplier<T> supplier1, FieldSupplier<T> supplier2) {
-//            return where(supplier1.getColumnNameByFieldDefault(), supplier2.getColumnNameByFieldDefault());
-//        }
-//
-//        public <T> Where where(FieldSupplier<T> supplier1, String opt, FieldSupplier<T> supplier2) {
-//            return where(supplier1.getColumnNameByFieldDefault(), opt, supplier2.getColumnNameByFieldDefault());
-//        }
-
-    }
-
-//    public class Where extends BaseJoin {
-//
-//        public Where or(String key, Object value) {
-//            return or(key, "=", value);
-//        }
-//
-//        public Where or(String key,String opt, Object value) {
-//            joinSQL.append(" OR " + key + " " + opt + " " + value);
-//            return this;
-//        }
-//
-//        public <T> Where or(FieldSupplier<T> supplier1, FieldSupplier<T> supplier2) {
-//            return or(supplier1.getColumnNameByFieldDefault(), supplier2.getColumnNameByFieldDefault());
-//        }
-//
-//        public <T> Where or(FieldSupplier<T> supplier1, String opt, FieldSupplier<T> supplier2) {
-//            return or(supplier1.getColumnNameByFieldDefault(), opt, supplier2.getColumnNameByFieldDefault());
-//        }
-//
-//        public Where and(String key, Object value) {
-//            return and(key, "=", value);
-//        }
-//
-//        public Where and(String key, String opt, Object value) {
-//            joinSQL.append(" AND " + key + " " + opt + " " + value);
-//            return this;
-//        }
-//
-//        public <T> Where and(FieldSupplier<T> supplier1, FieldSupplier<T> supplier2) {
-//            return and(supplier1.getColumnNameByFieldDefault(), supplier2.getColumnNameByFieldDefault());
-//        }
-//
-//        public <T> Where and(FieldSupplier<T> supplier1, String opt, FieldSupplier<T> supplier2) {
-//            return and(supplier1.getColumnNameByFieldDefault(), opt, supplier2.getColumnNameByFieldDefault());
-//        }
-//    }
-
 
     @Data
     public abstract class BaseJoin {

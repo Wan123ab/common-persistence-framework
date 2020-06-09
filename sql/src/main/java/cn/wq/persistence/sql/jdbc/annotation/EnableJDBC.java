@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 
 /**
  * @version 1.0
- * @auther 万强
+ * @author 万强
  * @date 2019/11/15 09:44
  * @desc 启用JDBC组件，将把SpringContextUtils放入容器进行管理
  */

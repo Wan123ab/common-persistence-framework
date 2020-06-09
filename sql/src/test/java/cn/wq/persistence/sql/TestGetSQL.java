@@ -9,7 +9,7 @@ import org.junit.Test;
 
 /**
  * @version 1.0
- * @auther 万强
+ * @author 万强
  * @date 2019/11/15 16:26
  * @desc
  */

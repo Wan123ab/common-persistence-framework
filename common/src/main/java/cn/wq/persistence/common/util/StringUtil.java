@@ -7,9 +7,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @Auther: 万强
- * @Date: 2019/8/19 18:07
- * @Desc: String工具类
+ * @author: 万强
+ * @date: 2019/8/19 18:07
+ * @desc: String工具类
  * @version: 1.0
  */
 public class StringUtil extends StringUtils {

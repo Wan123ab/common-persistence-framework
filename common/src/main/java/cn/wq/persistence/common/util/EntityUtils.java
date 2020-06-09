@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * 实体类工具类
  *
- * @Date 2019-7-17 下午5:54
+ * @date 2019-7-17 下午5:54
  * @Version 1.0
  */
 public class EntityUtils {

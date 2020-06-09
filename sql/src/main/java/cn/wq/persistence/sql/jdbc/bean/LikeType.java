@@ -1,9 +1,9 @@
 package cn.wq.persistence.sql.jdbc.bean;
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/20 11:07
- * @Description: SQL中like操作
+ * @author: 万强
+ * @date: 2019/7/20 11:07
+ * @description: SQL中like操作
  * @Version 1.0
  */
 public enum LikeType {

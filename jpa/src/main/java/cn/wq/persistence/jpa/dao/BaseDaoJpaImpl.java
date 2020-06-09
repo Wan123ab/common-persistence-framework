@@ -26,9 +26,9 @@ import static cn.wq.persistence.sql.jdbc.utils.SqlBuilderUtils.*;
 
 
 /**
- * @Auther: 万强
- * @Date: 2019/7/26 14:18
- * @Desc: BaseDao通用实现类---基于JPA
+ * @author: 万强
+ * @date: 2019/7/26 14:18
+ * @desc: BaseDao通用实现类---基于JPA
  * @Version: 1.0
  */
 @Repository

@@ -23,7 +23,7 @@ import java.util.List;
  * </p>
  *
  * @version : 1.0
- * @auther : 万强
+ * @author : 万强
  * @date : 2019/8/3 11:22
  * @desc : 抽象Model，封装了常用的单表CRUD操作
  */

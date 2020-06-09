@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 /**
  * @version 1.0
- * @Auther: 万强
- * @Date: 2019/7/17 11:09
- * @Desc: SQL解析工具类，用于将SQL对象解析成最终的sql以及参数数组(SQLWrapper)
+ * @author: 万强
+ * @date: 2019/7/17 11:09
+ * @desc: SQL解析工具类，用于将SQL对象解析成最终的sql以及参数数组(SQLWrapper)
  */
 @SuppressWarnings({"all"})
 public class SqlBuilderUtils {
