@@ -1,6 +1,5 @@
-package cn.wq.persistence.jpa.model;
+package cn.wq.persistence.sql.model;
 
-import cn.wq.persistence.sql.model.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 

@@ -2,9 +2,9 @@ package cn.wq.persistence.jpa;
 
 
 import cn.wq.persistence.common.util.JsonUtils;
-import cn.wq.persistence.jpa.model.McIdentifier;
 import cn.wq.persistence.sql.dao.BaseDao;
 import cn.wq.persistence.sql.jdbc.bean.Criteria;
+import cn.wq.persistence.sql.model.McIdentifier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

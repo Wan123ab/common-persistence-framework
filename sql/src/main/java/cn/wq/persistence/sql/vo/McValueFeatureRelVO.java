@@ -1,39 +1,32 @@
-package cn.wq.persistence.jpa.model;
+package cn.wq.persistence.sql.vo;
 
-import cn.wq.persistence.sql.model.Model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-
+/**
+ * @author 万强
+ * @version 1.0
+ * @date 2020/6/9 10:30
+ * @desc
+ */
 @Data
-@Table( name = "mc_value")
-public class McValue extends Model<McValue, Integer> {
+public class McValueFeatureRelVO {
 
-    /**
-     * 要素Id
-     */
-    @Column(name = "feature_id")
     private int featureId;
 
     /**
      * 要素类型1、link 2、lane 3、mark 4、LinkNode 5、object
      */
-    @Column(name = "feature_type")
     private int featureType;
 
     /**
      * 要素状态：0、无 1、施工 2、compliant 3、人工识别变化 4、人工识别确认 5、众包识别变化 6、众包识别未变化 7、typeAB更新确认
      * 8、typeAB更新变化 9、情报识别变化 10、情报识别未变化 11、问题反馈 12、问题确认 99、其他
      */
-    @Column(name = "feature_status")
     private int featureStatus;
 
     /**
      * 置信度编号
      */
-    @Column(name = "confidence_id")
     private int confidenceId;
 
     /**
@@ -44,31 +37,31 @@ public class McValue extends Model<McValue, Integer> {
      * 记录当前要素的置信度
      * 值域：(0,1000)
      */
-    @Column(name = "confidence_value")
     private double confidenceValue;
 
     /**
      * 要素更新时间
      */
-    @Column(name = "feature_updatetime")
     private String featureUpdateTime;
 
     /**
      * 要素验证时间
      */
-    @Column(name = "feature_checktime")
     private String featureCheckTime;
 
     /**
      * 额外信息
      */
-    @Column(name = "memo")
     private String memo;
 
-    @Override
-    @JsonIgnore
-    public Integer getId() {
-        return null;
-    }
+    /**
+     * 要素关联的link
+     */
+    private int linkRelId;
 
+    /**
+     * 记录link所在图幅
+     */
+    private String linkRelMesh;
 }
+ 

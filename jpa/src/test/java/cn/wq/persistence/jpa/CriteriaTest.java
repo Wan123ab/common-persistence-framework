@@ -1,15 +1,15 @@
 package cn.wq.persistence.jpa;
 
 import cn.wq.persistence.common.util.JsonUtils;
-import cn.wq.persistence.jpa.model.McFeatureRel;
-import cn.wq.persistence.jpa.model.McIdentifier;
-import cn.wq.persistence.jpa.model.McValue;
-import cn.wq.persistence.jpa.vo.McValueFeatureRelVO;
 import cn.wq.persistence.sql.dao.BaseDao;
 import cn.wq.persistence.sql.jdbc.bean.Criteria;
 import cn.wq.persistence.sql.jdbc.bean.Join;
 import cn.wq.persistence.sql.jdbc.bean.QuerySQL;
 import cn.wq.persistence.sql.jdbc.bean.SQL;
+import cn.wq.persistence.sql.model.McFeatureRel;
+import cn.wq.persistence.sql.model.McIdentifier;
+import cn.wq.persistence.sql.model.McValue;
+import cn.wq.persistence.sql.vo.McValueFeatureRelVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,7 +128,8 @@ public class CriteriaTest {
                 .from(McValue.class)
                 .innerJoin(new Join().with(McFeatureRel.class).on(mcValue::getFeatureId, mcFeatureRel::getFeatureId).and(mcValue::getFeatureType, mcFeatureRel::getFeatureType))
                 .where(mcFeatureRel::getLinkRelMesh, "26482653")
-                .and(mcFeatureRel::getLinkRelId, 524658);
+                .and(mcFeatureRel::getLinkRelId, 524658)
+                .andBetween(mcValue::getConfidenceId, 101, 160);
 
         try {
             List<McValueFeatureRelVO> mcValueFeatureRelVOS = baseDao.queryWithSql(sql, McValueFeatureRelVO.class);

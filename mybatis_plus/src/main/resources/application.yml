@@ -1,0 +1,86 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 一定要指明currentSchema，否则提示relation "auth_user" does not exist
+    # PG库用户登录后，默认搜索的schema名字为search_path = '"$user", public'，而我操作的schema恰恰不是当前用户，所以如果使用的不同用户连接不同的schema时，配置连接url，需要指定当前需要访问的schema名，如下：
+    # jdbc:postgresql://localhost:5432/cmpdb?useUnicode=true&characterEncoding=utf8&currentSchema=xxxxx
+#    url: jdbc:postgresql://192.168.3.56:5432/db1?useSSL=false&&currentSchema=jpa_test
+    url: jdbc:postgresql://172.19.50.173:5432/QIDB?currentSchema=map_confidence_init
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+
+    #配置数据源
+    druid:
+      # 初始化大小，最小，最大
+      maxActive: 20
+      initialSize: 5
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      minIdle: 10
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select version()
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filter:
+        stat:
+          # 慢SQL记录
+          log-slow-sql: true
+          # 显示时间超过1000ms的sql
+          slow-sql-millis: 1000
+          # 合并sql
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        #login-username: admin
+        #login-password: admin
+
+      # 合并多个DruidDataSource的监控数据
+      useGlobalDataSourceStat: true
+
+  # Jackson配置，格式化日期
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+logging:
+  level:
+    #不同目录下的日志可配置不同级别
+    org.springfromework: info
+    com.wq: info
+  #采用相对路径方式将日志文件输出到【log/myspringboot.log】
+  #采用绝对路径方式将日志文件输出到【/Users/wang/Downloads/myspringboot.log】
+  #file: /Users/wang/Downloads/myspringboot.log
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS
+
+###############################################################################
+## mybatis
+mybatis-plus:
+  #  MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，
+  #注册后在 Mapper 对应的 XML 文件中可以直接使用类名，而不用使用全限定的类名（即 XML 中调用的时候不用包含包名）
+  type-aliases-package: cn.wq.persistence.sql.model
+  type-handlers-package: cn.wq.persistence.mybatis_plus.dao
+  #MyBatis Mapper 所对应的 XML 文件位置
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    #使用驼峰法映射属性,配置这个resultType可以映射
+    map-underscore-to-camel-case: true
+    #  开启mybatis日志打印，用于开发阶段进行调试
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

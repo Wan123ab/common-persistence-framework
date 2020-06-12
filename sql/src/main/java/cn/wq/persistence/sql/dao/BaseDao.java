@@ -7,6 +7,7 @@ import cn.wq.persistence.sql.model.Model;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @version : 1.0
@@ -161,7 +162,7 @@ public interface BaseDao<ID extends Serializable> {
      * @param <T> 查询结果类型
      * @throws Exception
      */
-    <T> List<T> queryWithSql(SQL sql, Class<T> clz) throws Exception;
+    <T> List<T> queryWithSql(SQL sql, Class<T> clz,  Sort... sorts) throws Exception;
 
     /**
      * 根据原生sql进行查询，返回指定clz的结果集
@@ -213,5 +214,13 @@ public interface BaseDao<ID extends Serializable> {
      * @throws Exception 异常
      */
     <T> BigInteger queryCountWithCriteria(Criteria criteria, Class<T> clz) throws Exception;
+
+    /**
+     * 使用SQL查询，返回Map集合
+     * @param sql
+     * @return
+     * @throws Exception
+     */
+    List<Map<String, Object>> queryMapListWithSql(SQL sql,  Sort... sorts) throws Exception;
 
 }

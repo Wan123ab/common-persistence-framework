@@ -1,5 +1,6 @@
 package cn.wq.persistence.sql.jdbc.bean;
 
+import cn.wq.persistence.common.bean.Pair;
 import cn.wq.persistence.sql.jdbc.function.FieldSupplier;
 import com.google.common.collect.Lists;
 import lombok.Data;
@@ -163,19 +164,19 @@ public abstract class AbstractCriteria<Child extends AbstractCriteria> {
     }
 
     public Child whereBetween(String key, Object value1, Object value2) {
-        return where(key, "BETWEEN", value1 + " AND " + value2);
+        return where(key, "BETWEEN", new Pair<>(value1, value2));
     }
 
     public <T> Child whereBetween(FieldSupplier<T> supplier, Object value1, Object value2) {
-        return whereBetween(supplier.getColumnNameByFieldDefault(), "BETWEEN", value1 + " AND " + value2);
+        return whereBetween(supplier.getColumnNameByFieldDefault(), value1, value2);
     }
 
     public Child andBetween(String key, Object value1, Object value2) {
-        return and(key, "BETWEEN", value1 + " AND " + value2);
+        return and(key, "BETWEEN", new Pair<>(value1, value2));
     }
 
     public <T> Child andBetween(FieldSupplier<T> supplier, Object value1, Object value2) {
-        return andBetween(supplier.getColumnNameByFieldDefault(), "BETWEEN", value1 + " AND " + value2);
+        return andBetween(supplier.getColumnNameByFieldDefault(), value1, value2);
     }
 
     public <T> Child whereIfAbsent(String key, T value, Predicate<T> predicate) {

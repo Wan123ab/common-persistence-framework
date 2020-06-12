@@ -1,5 +1,6 @@
 package cn.wq.persistence.sql.jdbc.utils;
 
+import cn.wq.persistence.common.bean.Pair;
 import cn.wq.persistence.common.util.EntityUtils;
 import cn.wq.persistence.common.util.ReflectionUtils;
 import cn.wq.persistence.sql.jdbc.bean.*;
@@ -302,8 +303,11 @@ public class SqlBuilderUtils {
                     sql.append(IN_END).append(SPACE);
                 } else if (SQL_BETWEEN.equalsIgnoreCase(opt)) {
                     sql.append("? AND ?").append(SPACE);
-                    params.add(value);
-                } else if (SQL_IS.equalsIgnoreCase(opt)) {
+                    if(value instanceof Pair){
+                        Pair pair = (Pair) value;
+                        params.add(pair.getFirst());
+                        params.add(pair.getSecond());
+                    }                } else if (SQL_IS.equalsIgnoreCase(opt)) {
                     sql.append(value).append(SPACE);
                 } else if (SQL_IS_NOT.equalsIgnoreCase(opt)) {
                     sql.append(value).append(SPACE);

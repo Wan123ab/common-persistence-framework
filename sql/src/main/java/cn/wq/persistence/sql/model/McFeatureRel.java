@@ -1,6 +1,5 @@
-package cn.wq.persistence.jpa.model;
+package cn.wq.persistence.sql.model;
 
-import cn.wq.persistence.sql.model.Model;
 import lombok.Data;
 
 import javax.persistence.Column;

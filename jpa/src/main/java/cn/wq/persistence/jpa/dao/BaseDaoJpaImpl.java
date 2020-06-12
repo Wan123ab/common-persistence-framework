@@ -379,15 +379,9 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
     }
 
     @Override
-    public <T> List<T> queryWithSql(SQL sql, Class<T> clz) throws Exception {
-        SQLWrapper sqlWrapper = buildSql(sql);
-        Query nativeQuery = entityManager.createNativeQuery(sqlWrapper.getSql());
-        setParameters(nativeQuery, sqlWrapper.getParams());
-        nativeQuery.unwrap(NativeQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-
-        /*查询数据集合*/
-        List<Map> list = (List<Map>) nativeQuery.getResultList();
-        List<T> collect = list.stream().map(m -> JsonUtils.map2Obj(m, clz)).collect(Collectors.toList());
+    public <T> List<T> queryWithSql(SQL sql, Class<T> clz, Sort... sorts) throws Exception {
+        List<Map<String, Object>> mapList = queryMapListWithSql(sql, sorts);
+        List<T> collect = mapList.stream().map(m -> JsonUtils.map2Obj(m, clz)).collect(Collectors.toList());
         return collect;
     }
 
@@ -515,6 +509,24 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
         BigInteger total = (BigInteger) countQuery.getSingleResult();
 
         return total;
+    }
+
+    @Override
+    public List<Map<String, Object>> queryMapListWithSql(SQL sql, Sort... sorts) throws Exception {
+        SQLWrapper sqlWrapper = buildSql(sql);
+        StringBuffer stringBuffer = new StringBuffer(sqlWrapper.getSql());
+
+        if (sorts.length > 0) {
+            resolveOrderBy(Arrays.asList(sorts), stringBuffer);
+        }
+
+        Query nativeQuery = entityManager.createNativeQuery(stringBuffer.toString());
+        setParameters(nativeQuery, sqlWrapper.getParams());
+        nativeQuery.unwrap(NativeQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+
+        /*查询数据集合*/
+        List<Map<String, Object>> list = (List<Map<String, Object>>) nativeQuery.getResultList();
+        return list;
     }
 
 
