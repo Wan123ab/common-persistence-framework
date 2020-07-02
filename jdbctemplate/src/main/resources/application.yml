@@ -64,6 +64,9 @@ logging:
     #不同目录下的日志可配置不同级别
     org.springfromework: info
     com.wq: info
+    org.springframework.jdbc.core.JdbcTemplate: debug
+    org.springframework.jdbc.core.StatementCreatorUtils: trace
+
   #采用相对路径方式将日志文件输出到【log/myspringboot.log】
   #采用绝对路径方式将日志文件输出到【/Users/wang/Downloads/myspringboot.log】
   #file: /Users/wang/Downloads/myspringboot.log

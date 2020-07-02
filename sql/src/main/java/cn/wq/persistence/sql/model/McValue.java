@@ -5,10 +5,11 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Table( name = "mc_value")
-public class McValue extends Model<McValue, Integer> {
+public class McValue extends Model<McValue> {
 
     /**
      * 要素Id
@@ -66,7 +67,7 @@ public class McValue extends Model<McValue, Integer> {
 
     @Override
     @JsonIgnore
-    public Integer getId() {
+    public Serializable getId() {
         return null;
     }
 

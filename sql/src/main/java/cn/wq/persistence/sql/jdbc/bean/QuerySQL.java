@@ -52,6 +52,13 @@ public class QuerySQL extends SQL<QuerySQL> {
     private Set<Sort> sorts = Sets.newLinkedHashSet();
 
     /**
+     * 分页参数
+     */
+    private Integer limit;
+
+    private Integer offset;
+
+    /**
      * EXISTS/NOT EXISTS 操作
      */
     private List<BaseExists> exists = Lists.newArrayList();
@@ -181,6 +188,16 @@ public class QuerySQL extends SQL<QuerySQL> {
 
     public QuerySQL orderBy(Sort... sorts) {
         this.sorts.addAll(Arrays.asList(sorts));
+        return this;
+    }
+
+    public QuerySQL limit(Integer limit){
+        this.limit = limit;
+        return this;
+    }
+
+    public QuerySQL offset(Integer offset){
+        this.offset = offset;
         return this;
     }
 

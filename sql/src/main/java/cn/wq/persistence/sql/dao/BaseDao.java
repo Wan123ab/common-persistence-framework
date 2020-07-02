@@ -5,7 +5,6 @@ import cn.wq.persistence.sql.jdbc.utils.SqlBuilderUtils;
 import cn.wq.persistence.sql.model.Model;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ import java.util.Map;
  * @date : 2019/7/26 13:56
  * @desc : 通用Dao接口
  */
-public interface BaseDao<ID extends Serializable> {
+public interface BaseDao {
 
     int BATCH_PAGE_SIZE = 1000;
 
@@ -25,11 +24,10 @@ public interface BaseDao<ID extends Serializable> {
      * @param t 实体对象
      * @throws Exception sql错误抛出异常
      */
-    default <T extends Model> boolean save(T t) throws Exception {
+    default <T extends Model> void save(T t) throws Exception {
         SQLWrapper sqlWrapper = SqlBuilderUtils.buildSql(t, SqlType.INSERT);
 
-        int i = executeSql(sqlWrapper.getSql(), sqlWrapper.getParams());
-        return i == 1;
+        executeSql(sqlWrapper.getSql(), sqlWrapper.getParams());
     }
 
     /**
@@ -38,11 +36,10 @@ public interface BaseDao<ID extends Serializable> {
      * @param t 实体对象
      * @throws Exception sql错误抛出异常
      */
-    default <T extends Model> boolean update(T t) throws Exception {
+    default <T extends Model> void update(T t) throws Exception {
         SQLWrapper sqlWrapper = SqlBuilderUtils.buildSql(t, SqlType.UPDATE);
 
-        int i = executeSql(sqlWrapper.getSql(), sqlWrapper.getParams());
-        return i == 1;
+        executeSql(sqlWrapper.getSql(), sqlWrapper.getParams());
     }
 
     /**
@@ -67,9 +64,9 @@ public interface BaseDao<ID extends Serializable> {
      * @param id 实体主键
      * @throws Exception sql错误抛出异常
      */
-    <T extends Model> void delete(ID id, Class<T> clz) throws Exception;
+    <T extends Model> void delete(Serializable id, Class<T> clz) throws Exception;
 
-    <T extends Model> boolean delete(T t) throws Exception;
+    <T extends Model> void delete(T t) throws Exception;
 
     <T extends Model> void deleteAll(Class<T> clz) throws Exception;
 
@@ -87,7 +84,7 @@ public interface BaseDao<ID extends Serializable> {
      * @param ids 主键集合
      * @throws Exception sql错误抛出异常
      */
-    <T extends Model> void batchDelete(List<ID> ids, Class<T> clz) throws Exception;
+    <T extends Model> void batchDelete(List<Serializable> ids, Class<T> clz) throws Exception;
 
     /**
      * 根据ID检索持久化对象
@@ -96,7 +93,7 @@ public interface BaseDao<ID extends Serializable> {
      * @return T 实体对象
      * @throws Exception sql错误抛出异常
      */
-    <T extends Model> T queryOne(ID id, Class<T> clz) throws Exception;
+    <T extends Model> T queryOne(Serializable id, Class<T> clz) throws Exception;
 
     /**
      * 检索所有持久化对象
@@ -162,7 +159,17 @@ public interface BaseDao<ID extends Serializable> {
      * @param <T> 查询结果类型
      * @throws Exception
      */
-    <T> List<T> queryWithSql(SQL sql, Class<T> clz,  Sort... sorts) throws Exception;
+    <T> List<T> queryWithSql(SQL sql, Class<T> clz) throws Exception;
+
+    /**
+     * 根据SQL分页查询
+     * @param sql
+     * @param clz
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    <T> PageResult<T> pageQueryWithSql(SQL sql, Class<T> clz) throws Exception;
 
     /**
      * 根据原生sql进行查询，返回指定clz的结果集
@@ -202,7 +209,7 @@ public interface BaseDao<ID extends Serializable> {
      * @return Integer 记录总数
      * @throws Exception 异常
      */
-    <T> BigInteger queryCount(Class<T> clz) throws Exception;
+    <T> Integer queryCount(Class<T> clz) throws Exception;
 
     /**
      * 查询记录总数
@@ -213,7 +220,7 @@ public interface BaseDao<ID extends Serializable> {
      * @return Integer 记录总数
      * @throws Exception 异常
      */
-    <T> BigInteger queryCountWithCriteria(Criteria criteria, Class<T> clz) throws Exception;
+    <T> Integer queryCountWithCriteria(Criteria criteria, Class<T> clz) throws Exception;
 
     /**
      * 使用SQL查询，返回Map集合
@@ -221,6 +228,6 @@ public interface BaseDao<ID extends Serializable> {
      * @return
      * @throws Exception
      */
-    List<Map<String, Object>> queryMapListWithSql(SQL sql,  Sort... sorts) throws Exception;
+    List<Map<String, Object>> queryMapListWithSql(SQL sql) throws Exception;
 
 }

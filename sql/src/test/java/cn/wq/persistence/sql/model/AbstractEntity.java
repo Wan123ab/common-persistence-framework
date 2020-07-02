@@ -21,7 +21,7 @@ import java.util.Date;
  * 让子类定义的表能拥有继承的字段(列)
  */
 @MappedSuperclass
-public class AbstractEntity<T extends AbstractEntity> extends Model<T, Integer> {
+public class AbstractEntity<T extends AbstractEntity> extends Model<T> {
 
     /**
      * GeneratedValue 用于指定ID主键的生成方式，GenerationType.IDENTITY 指采用数据库原生的自增方式，

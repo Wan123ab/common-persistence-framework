@@ -1,6 +1,5 @@
 package cn.wq.persistence.sql.jdbc.bean;
 
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 /**
  * @author : 万强
@@ -29,7 +27,7 @@ public class SQLWrapper {
 
     private Object[] params;
 
-    private Integer[] paramTypes;
+    private int[] paramTypes;
 
     public SQLWrapper(String sql, Object[] params) {
         this.sql = sql;
@@ -60,11 +58,11 @@ public class SQLWrapper {
     /**
      * 根据params解析paramTypes
      */
-    public void resolveParamTypes(){
-        ArrayList<Integer> paramTypeList = Lists.newArrayListWithCapacity(params.length);
-        Integer[] paramTypeArr = new Integer[params.length];
-        Arrays.stream(params).forEach(param -> paramTypeList.add(getTypes(param.getClass())));
-        this.paramTypes = paramTypeList.toArray(paramTypeArr);
+    public int[] resolveParamTypes(){
+        paramTypes = new int[params.length];
+        IntStream.range(0, params.length).forEach(index -> paramTypes[index] = getTypes(params[index].getClass()));
+
+        return paramTypes;
     }
 
     private static<T> int getTypes(Class<T> arg) {

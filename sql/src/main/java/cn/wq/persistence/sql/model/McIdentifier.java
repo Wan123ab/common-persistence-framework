@@ -1,15 +1,22 @@
 package cn.wq.persistence.sql.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "mc_identifier")
-public class McIdentifier extends Model<McIdentifier, Integer> {
+@Builder
+public class McIdentifier extends Model<McIdentifier> {
     /**
      * ID
      * Id表示该字段对应数据库表的主键id
@@ -47,7 +54,7 @@ public class McIdentifier extends Model<McIdentifier, Integer> {
 
     @Override
     @JsonIgnore
-    public Integer getId() {
+    public Serializable getId() {
         return ConfidenceID;
     }
 }

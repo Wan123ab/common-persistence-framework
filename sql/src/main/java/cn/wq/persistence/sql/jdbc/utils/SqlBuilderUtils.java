@@ -66,7 +66,7 @@ public class SqlBuilderUtils {
      * @param sql
      * @return
      */
-    public static SQLWrapper buildQuerySql(QuerySQL sql) {
+    private static SQLWrapper buildQuerySql(QuerySQL sql) {
         StringBuffer sb = new StringBuffer();
         List params = Lists.newArrayList();
 
@@ -105,7 +105,7 @@ public class SqlBuilderUtils {
      * @param sb
      * @param params
      */
-    public static void resolveQuerySql(QuerySQL sql, StringBuffer sb, List params) {
+    private static void resolveQuerySql(QuerySQL sql, StringBuffer sb, List params) {
 
         /**
          * 拼接SQL 操作符
@@ -212,6 +212,23 @@ public class SqlBuilderUtils {
          */
         resolveOrderBy(sql.getSorts(), sb);
 
+        /**
+         * 拼接limit、offset分页参数
+         */
+        resolveLimitAndOffset(sql.getLimit(), sql.getOffset(), sb);
+
+    }
+
+    /**
+     * 解析分页参数
+     * @param limit
+     * @param offset
+     * @param sb
+     */
+    private static void resolveLimitAndOffset(Integer limit, Integer offset, StringBuffer sb) {
+        if(Objects.nonNull(limit) && Objects.nonNull(offset)){
+            sb.append(" LIMIT ").append(limit).append(" OFFSET ").append(offset);
+        }
     }
 
     /**
@@ -220,7 +237,7 @@ public class SqlBuilderUtils {
      * @param queryFields
      * @param sql
      */
-    public static void resolveQueryFields(Set<String> queryFields, StringBuffer sql) {
+    private static void resolveQueryFields(Set<String> queryFields, StringBuffer sql) {
         queryFields.forEach(f -> sql.append(f).append(", "));
         //去掉最后一个,
         sql.setLength(sql.length() - 2);
@@ -233,7 +250,7 @@ public class SqlBuilderUtils {
      * @param queryTables
      * @param sql
      */
-    public static void resolveQueryTables(Set<String> queryTables, StringBuffer sql) {
+    private static void resolveQueryTables(Set<String> queryTables, StringBuffer sql) {
         sql.append(" FROM ");
         queryTables.forEach(t -> sql.append(t).append(", "));
         sql.setLength(sql.length() - 2);
@@ -246,7 +263,7 @@ public class SqlBuilderUtils {
      * @param joins
      * @param sql
      */
-    public static void resolveJoins(List<Join.BaseJoin> joins, StringBuffer sql) {
+    private static void resolveJoins(List<Join.BaseJoin> joins, StringBuffer sql) {
         joins.forEach(join -> sql.append(join.getJoinSQL()));
     }
 
@@ -257,7 +274,7 @@ public class SqlBuilderUtils {
      * @param sql
      * @param params
      */
-    public static void resolveExists(List<BaseExists> exists, StringBuffer sql, List params) {
+    private static void resolveExists(List<BaseExists> exists, StringBuffer sql, List params) {
 
         if (!CollectionUtils.isEmpty(exists)) {
             exists.forEach(exist -> {
@@ -277,7 +294,7 @@ public class SqlBuilderUtils {
      * @param sql
      * @param params
      */
-    public static void resolveWhereParam(List<WhereParam> whereParams, StringBuffer sql, List params) {
+    private static void resolveWhereParam(List<WhereParam> whereParams, StringBuffer sql, List params) {
 
         whereParams.forEach(whereParam -> {
             Boolean usePlaceholder = whereParam.getUsePlaceholder();
@@ -333,7 +350,7 @@ public class SqlBuilderUtils {
      * @param groupByFields
      * @param sql
      */
-    public static void resolveGroupBy(Set<String> groupByFields, StringBuffer sql) {
+    private static void resolveGroupBy(Set<String> groupByFields, StringBuffer sql) {
         if (!CollectionUtils.isEmpty(groupByFields)) {
             sql.append(SQL_GROUP_BY).append(SPACE);
             groupByFields.forEach(f -> sql.append(f).append(","));
@@ -348,7 +365,7 @@ public class SqlBuilderUtils {
      * @param having
      * @param sql
      */
-    public static void resolveHaving(StringBuffer having, StringBuffer sql) {
+    private static void resolveHaving(StringBuffer having, StringBuffer sql) {
         if (!StringUtils.isEmpty(having)) {
             sql.append(having);
         }
@@ -380,7 +397,7 @@ public class SqlBuilderUtils {
      * @param sql
      * @param params
      */
-    public static void resolveUnionAndUnionAll(List<BaseUnion> unions, StringBuffer sql, List params) {
+    private static void resolveUnionAndUnionAll(List<BaseUnion> unions, StringBuffer sql, List params) {
 
         if (!CollectionUtils.isEmpty(unions)) {
             unions.forEach(u -> {
@@ -399,7 +416,7 @@ public class SqlBuilderUtils {
      * @param criteriaWrapper
      * @return
      */
-    public static SQLWrapper resolveCriteriaWrapper(CriteriaWrapper criteriaWrapper) {
+    private static SQLWrapper resolveCriteriaWrapper(CriteriaWrapper criteriaWrapper) {
         StringBuffer sql = new StringBuffer();
 
         sql.append(criteriaWrapper.getCriteriaType().getType()).append(SPACE).append("(");
@@ -443,7 +460,7 @@ public class SqlBuilderUtils {
     }
 
 
-    public static void buildCriteria(Criteria criteria, StringBuffer sql, List params) {
+    private static void buildCriteria(Criteria criteria, StringBuffer sql, List params) {
         sql.append(SPACE).append("( ");
 
         /**

@@ -33,7 +33,7 @@ import static cn.wq.persistence.sql.jdbc.utils.SqlBuilderUtils.*;
  */
 @Repository
 @SuppressWarnings({"all"})
-public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
+public class BaseDaoJpaImpl implements BaseDao {
 
     /**
      * 注入容器托管的EntityManager，事务需要配合@Transactional使用，不能手动控制
@@ -50,16 +50,14 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <T extends Model> boolean save(T t) throws Exception {
+    public <T extends Model> void save(T t) throws Exception {
         entityManager.persist(t);
-        return true;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <T extends Model> boolean update(T t) throws Exception {
+    public <T extends Model> void update(T t) throws Exception {
         entityManager.merge(t);
-        return true;
     }
 
     /**
@@ -73,7 +71,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
     @Override
     /*手动控制事务，不再使用Spring容器自带事务*/
 //    @Transactional(rollbackFor = Exception.class)
-    public <T extends Model> void batchSave(List<T> list) {
+    public <T extends Model> void batchSave(List<T> list) throws Exception {
         if (!CollectionUtils.isEmpty(list)) {
             EntityManager entityManager = null;
             EntityTransaction transaction = null;
@@ -133,7 +131,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
      */
     @Override
 //    @Transactional(rollbackFor = Exception.class)
-    public <T extends Model> void batchUpdate(List<T> list) {
+    public <T extends Model> void batchUpdate(List<T> list) throws Exception {
         if (!CollectionUtils.isEmpty(list)) {
             EntityManager entityManager = null;
             EntityTransaction transaction = null;
@@ -187,15 +185,14 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <T extends Model> void delete(ID id, Class<T> clz) throws Exception {
+    public <T extends Model> void delete(Serializable id, Class<T> clz) throws Exception {
         entityManager.remove(queryOne(id, clz));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <T extends Model> boolean delete(T t) throws Exception {
+    public <T extends Model> void delete(T t) throws Exception {
         entityManager.remove(t);
-        return true;
     }
 
     @Override
@@ -222,7 +219,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <T extends Model> void batchDelete(List<ID> ids, Class<T> clz) throws Exception {
+    public <T extends Model> void batchDelete(List<Serializable> ids, Class<T> clz) throws Exception {
         StringBuffer sql = new StringBuffer();
         sql.append("DELETE FROM %s WHERE ").append(getPK(clz)).append(" in (:ids)");
 
@@ -232,7 +229,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
     }
 
     @Override
-    public <T extends Model> T queryOne(ID id, Class<T> clz) throws Exception {
+    public <T extends Model> T queryOne(Serializable id, Class<T> clz) throws Exception {
         return entityManager.find(clz, id);
     }
 
@@ -241,10 +238,6 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
         StringBuffer sql = new StringBuffer("SELECT " + FieldSupplier.getAllColumnNameAndAlias(clz) + " FROM  " + EntityUtils.getTableName(clz));
         if (sorts.length > 0) {
             resolveOrderBy(Arrays.asList(sorts), sql);
-        } else {
-            if (!StringUtils.isEmpty(getPK(clz))) {
-                sql.append(" ORDER BY ").append(getPK(clz));
-            }
         }
         Query nativeQuery = entityManager.createNativeQuery(sql.toString());
         /*设置将RS映射为Map，而不是直接返回Object[]*/
@@ -262,7 +255,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
             resolveOrderBy(Arrays.asList(sorts), sql);
         } else {
             if (!StringUtils.isEmpty(getPK(clz))) {
-                sql.append(" ORDER BY ").append(getPK(clz));
+                sql.append(" ORDER BY ").append(getPK(clz)).append(" ");
             }
         }
         Query nativeQuery = entityManager.createNativeQuery(sql.toString());
@@ -278,7 +271,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
         /*查询数据总数*/
         String countSql = "SELECT count(1) FROM " + EntityUtils.getTableName(clz);
         Query countQuery = entityManager.createNativeQuery(countSql);
-        BigInteger total = (BigInteger) countQuery.getSingleResult();
+        Integer total = Integer.valueOf(String.valueOf(countQuery.getSingleResult()));
 
         return new PageResult<>(total, collect);
     }
@@ -294,7 +287,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
             resolveOrderBy(Arrays.asList(sorts), sql);
         } else {
             if (!StringUtils.isEmpty(getPK(clz))) {
-                sql.append(" ORDER BY ").append(getPK(clz));
+                sql.append(" ORDER BY ").append(getPK(clz)).append(" ");
             }
         }
 
@@ -314,7 +307,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
         /*查询数据总数*/
         String countSql = "SELECT count(1) FROM " + EntityUtils.getTableName(clz);
         Query countQuery = entityManager.createNativeQuery(countSql);
-        BigInteger total = (BigInteger) countQuery.getSingleResult();
+        Integer total = Integer.valueOf(String.valueOf(countQuery.getSingleResult()));
 
         return new PageResult<>(total, collect);
     }
@@ -379,10 +372,25 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
     }
 
     @Override
-    public <T> List<T> queryWithSql(SQL sql, Class<T> clz, Sort... sorts) throws Exception {
-        List<Map<String, Object>> mapList = queryMapListWithSql(sql, sorts);
+    public <T> List<T> queryWithSql(SQL sql, Class<T> clz) throws Exception {
+        List<Map<String, Object>> mapList = queryMapListWithSql(sql);
         List<T> collect = mapList.stream().map(m -> JsonUtils.map2Obj(m, clz)).collect(Collectors.toList());
         return collect;
+    }
+
+    /**
+     * 根据SQL分页查询
+     *
+     * @param sql
+     * @param clz
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public <T> PageResult<T> pageQueryWithSql(SQL sql, Class<T> clz) throws Exception {
+        List<T> list = queryWithSql(sql, clz);
+        Integer total = queryCount(clz);
+        return new PageResult<>(total, list);
     }
 
     /**
@@ -478,11 +486,11 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
      * @throws Exception 异常
      */
     @Override
-    public <T> BigInteger queryCount(Class<T> clz) throws Exception {
+    public <T> Integer queryCount(Class<T> clz) throws Exception {
         /*查询数据总数*/
         String countSql = "SELECT COUNT(*) FROM " + EntityUtils.getTableName(clz);
         Query countQuery = entityManager.createNativeQuery(countSql);
-        BigInteger total = (BigInteger) countQuery.getSingleResult();
+        Integer total = Integer.valueOf(String.valueOf(countQuery.getSingleResult()));
 
         return total;
     }
@@ -497,7 +505,7 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
      * @throws Exception 异常
      */
     @Override
-    public <T> BigInteger queryCountWithCriteria(Criteria criteria, Class<T> clz) throws Exception {
+    public <T> Integer queryCountWithCriteria(Criteria criteria, Class<T> clz) throws Exception {
         StringBuffer countSql = new StringBuffer("SELECT COUNT(*) FROM " + EntityUtils.getTableName(clz));
         countSql.append(" WHERE ");
         SQLWrapper sqlWrapper = resolveCriteria(criteria);
@@ -506,19 +514,15 @@ public class BaseDaoJpaImpl<ID extends Serializable> implements BaseDao<ID> {
 
         Query countQuery = entityManager.createNativeQuery(countSql.toString());
         setParameters(countQuery, params);
-        BigInteger total = (BigInteger) countQuery.getSingleResult();
+        Integer total = (Integer) countQuery.getSingleResult();
 
         return total;
     }
 
     @Override
-    public List<Map<String, Object>> queryMapListWithSql(SQL sql, Sort... sorts) throws Exception {
+    public List<Map<String, Object>> queryMapListWithSql(SQL sql) throws Exception {
         SQLWrapper sqlWrapper = buildSql(sql);
         StringBuffer stringBuffer = new StringBuffer(sqlWrapper.getSql());
-
-        if (sorts.length > 0) {
-            resolveOrderBy(Arrays.asList(sorts), stringBuffer);
-        }
 
         Query nativeQuery = entityManager.createNativeQuery(stringBuffer.toString());
         setParameters(nativeQuery, sqlWrapper.getParams());

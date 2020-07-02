@@ -4,10 +4,11 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Table( name = "mc_feature_rel")
-public class McFeatureRel extends Model<McFeatureRel, Integer> {
+public class McFeatureRel extends Model<McFeatureRel> {
 
     /**
      * 要素Id
@@ -46,7 +47,7 @@ public class McFeatureRel extends Model<McFeatureRel, Integer> {
     private String memo;
 
     @Override
-    public Integer getId() {
+    public Serializable getId() {
         return null;
     }
 }

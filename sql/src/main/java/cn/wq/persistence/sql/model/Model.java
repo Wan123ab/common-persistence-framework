@@ -29,7 +29,7 @@ import java.util.List;
  */
 @Data
 @SuppressWarnings("all")
-public abstract class Model<T extends Model, ID extends Serializable> implements Serializable {
+public abstract class Model<T extends Model> implements Serializable {
 
     /**
      * T泛型Class
@@ -37,9 +37,9 @@ public abstract class Model<T extends Model, ID extends Serializable> implements
     @JsonIgnore
     private Class<T> entityClass;
 
-    private BaseDao<ID> baseDao;
+    private BaseDao baseDao;
 
-    private BaseDao<ID> getBaseDao() {
+    private BaseDao getBaseDao() {
 
         if (baseDao == null) {
             baseDao = SpringContextUtils.getBean(BaseDao.class);
@@ -57,7 +57,7 @@ public abstract class Model<T extends Model, ID extends Serializable> implements
      *
      * @return ID
      */
-    public abstract ID getId();
+    public abstract Serializable getId();
 
     /**
      * 保存
@@ -65,9 +65,9 @@ public abstract class Model<T extends Model, ID extends Serializable> implements
      * @return
      * @throws Exception
      */
-    public boolean save() throws Exception {
+    public void save() throws Exception {
 
-        return getBaseDao().save(this);
+        getBaseDao().save(this);
     }
 
     /**
@@ -76,9 +76,9 @@ public abstract class Model<T extends Model, ID extends Serializable> implements
      * @return
      * @throws Exception
      */
-    public boolean update() throws Exception {
+    public void update() throws Exception {
 
-        return getBaseDao().update(this);
+        getBaseDao().update(this);
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class Model<T extends Model, ID extends Serializable> implements
      * @return
      * @throws Exception
      */
-    public boolean batchDelete(List<ID> ids) throws Exception {
+    public boolean batchDelete(List<Serializable> ids) throws Exception {
         getBaseDao().batchDelete(ids, entityClass);
         return true;
     }
@@ -147,7 +147,7 @@ public abstract class Model<T extends Model, ID extends Serializable> implements
      * @return
      * @throws Exception
      */
-    public T queryOne(ID id) throws Exception {
+    public T queryOne(Serializable id) throws Exception {
         return getBaseDao().queryOne(id, entityClass);
     }
 
@@ -213,7 +213,7 @@ public abstract class Model<T extends Model, ID extends Serializable> implements
      * @return
      * @throws Exception
      */
-    public BigInteger queryCount() throws Exception {
+    public Integer queryCount() throws Exception {
         return getBaseDao().queryCount(entityClass);
     }
 
@@ -225,7 +225,7 @@ public abstract class Model<T extends Model, ID extends Serializable> implements
      * @return
      * @throws Exception
      */
-    public BigInteger queryCountWithCriteria(Criteria criteria) throws Exception {
+    public Integer queryCountWithCriteria(Criteria criteria) throws Exception {
         return getBaseDao().queryCountWithCriteria(criteria, entityClass);
     }
 

@@ -22,7 +22,7 @@ public class PageResult<T> implements Serializable {
     /**
      * 总数量
      */
-    private BigInteger total;
+    private Integer total;
     /**
      * 返回对象类型列表
      */
@@ -33,7 +33,7 @@ public class PageResult<T> implements Serializable {
      * @return
      */
     public static PageResult empty() {
-        return new PageResult(BigInteger.valueOf(0), Collections.EMPTY_LIST);
+        return new PageResult(0, Collections.EMPTY_LIST);
     }
 
 }

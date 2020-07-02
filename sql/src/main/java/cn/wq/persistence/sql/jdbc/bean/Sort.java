@@ -20,7 +20,7 @@ public class Sort {
     /**
      * 默认DESC
      */
-    private String type = DESC;
+    private String type = ASC;
 
     public Sort(String key) {
         this.key = key;

@@ -32,7 +32,7 @@ import java.util.List;
 public class CriteriaTest {
 
     @Autowired
-    private BaseDao<Integer> baseDao;
+    private BaseDao baseDao;
 
     @Test
     public void testBaseDao(){

@@ -46,9 +46,9 @@ public class TestQuerySQL {
                 .and(new User()::getName, "张三")
                 .and(new Car()::getBrand, "大众斯柯达")
                 .and(new Car()::getColor, "黑色")
-                .andIfAbsent(new Car()::getUserId, "1")
+                .andIfAbsent(new Car()::getUserId, 1)
                 .groupBy(new Car()::getBrand, new User()::getAge)
-                .having(count(new User()::getId), ">", "3")
+                .having(count(new User()::getId), ">", 3)
                 .orderBy(new Sort(new Car()::getCreateDate));
 
         SQLWrapper sqlWrapper = buildSql(sql);
@@ -93,7 +93,7 @@ public class TestQuerySQL {
                 .union()
                 .select(Car::new).from(Car.class).where(new Car()::getColor, "白色")
                 .unionAll()
-                .select(House::new).from(House.class).where(new House()::getFloorNum, "4");
+                .select(House::new).from(House.class).where(new House()::getFloorNum, 4);
 
         SQLWrapper sqlWrapper = buildSql(sql);
         System.err.println(sqlFormatter.format(sqlWrapper.getSql()));

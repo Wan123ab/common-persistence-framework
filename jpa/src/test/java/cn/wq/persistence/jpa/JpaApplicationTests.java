@@ -20,7 +20,7 @@ import java.util.List;
 public class JpaApplicationTests {
 
     @Autowired
-    private BaseDao<Serializable> baseDao;
+    private BaseDao baseDao;
 
     @Test
     public void testAR() {
@@ -46,8 +46,8 @@ public class JpaApplicationTests {
     @Test
     public void testCount() {
         try {
-            BigInteger count = baseDao.queryCount(McIdentifier.class);
-            BigInteger count1 = new McIdentifier().queryCount();
+            Integer count = baseDao.queryCount(McIdentifier.class);
+            Integer count1 = new McIdentifier().queryCount();
             System.out.println("记录总数count：" + count);
             System.out.println("记录总数count1：" + count1);
         } catch (Exception e) {
@@ -62,9 +62,9 @@ public class JpaApplicationTests {
             Criteria criteria = new Criteria().where(mcIdentifier::getCollectionID, 1)
                     .and(mcIdentifier::getConfidenceID, "<=", 160)
                     .andIfAbsent(mcIdentifier::getAttributeID, null);
-            BigInteger count = baseDao.queryCountWithCriteria(criteria, McIdentifier.class);
+            Integer count = baseDao.queryCountWithCriteria(criteria, McIdentifier.class);
 
-            BigInteger count1 = mcIdentifier.queryCountWithCriteria(criteria);
+            Integer count1 = mcIdentifier.queryCountWithCriteria(criteria);
             System.out.println("记录总数count：" + count);
             System.out.println("记录总数count1：" + count1);
 
