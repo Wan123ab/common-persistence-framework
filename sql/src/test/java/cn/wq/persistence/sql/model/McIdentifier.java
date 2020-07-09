@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Data
 @Table(name = "mc_identifier")
-public class McIdentifier extends Model<McIdentifier, Integer> {
+public class McIdentifier extends Model<McIdentifier> {
     /**
      * ID
      * Id表示该字段对应数据库表的主键id

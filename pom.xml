@@ -203,6 +203,7 @@
         <module>common</module>
         <module>sql</module>
         <module>jpa</module>
+        <module>jpa_plus</module>
         <module>mybatis_plus</module>
     </modules>
 

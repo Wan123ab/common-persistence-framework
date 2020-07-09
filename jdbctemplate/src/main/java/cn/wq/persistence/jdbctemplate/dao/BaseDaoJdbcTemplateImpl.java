@@ -10,6 +10,7 @@ import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -42,6 +43,7 @@ public class BaseDaoJdbcTemplateImpl implements BaseDao {
      * @throws Exception sql错误抛出异常
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <T extends Model> void batchSave(List<T> list) throws Exception {
         if (CollectionUtils.isEmpty(list)) {
             return;
@@ -62,6 +64,7 @@ public class BaseDaoJdbcTemplateImpl implements BaseDao {
      * @throws Exception sql错误抛出异常
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <T extends Model> void batchUpdate(List<T> list) throws Exception {
         if (CollectionUtils.isEmpty(list)) {
             return;
