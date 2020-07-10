@@ -14,6 +14,8 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,6 +82,22 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
     @GetMapping(path = "/sort")
     protected HttpEntity<List<T>> findAllBySort(Sort sort){
         return new HttpEntity<>(service.findAllBySort(sort));
+    }
+
+    @PostMapping(path = "/save")
+    protected HttpEntity<T> save(@RequestBody T t){
+        return new HttpEntity<>(service.save(t));
+    }
+
+    @PostMapping(path = "/update")
+    protected HttpEntity<T> update(@RequestBody T t){
+        return new HttpEntity<>(service.save(t));
+    }
+
+    @PostMapping(path = "/delete/{id}")
+    protected HttpEntity delete(@PathVariable("id") T t){
+        service.delete(t);
+        return HttpEntity.EMPTY;
     }
 
 }

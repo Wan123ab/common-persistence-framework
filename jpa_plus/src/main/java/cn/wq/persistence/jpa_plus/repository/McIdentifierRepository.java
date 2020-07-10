@@ -52,6 +52,6 @@ public interface McIdentifierRepository extends BaseRepository<McIdentifier> {
      * @param <T>
      * @return
      */
-    <T> Page<T> findByCollectionID(Integer CollectionID, Pageable pageable, Class<T> clz);
+    <T> Page<T> readByCollectionID(Integer CollectionID, Pageable pageable, Class<T> clz);
 
 }

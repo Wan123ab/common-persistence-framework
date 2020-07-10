@@ -64,7 +64,7 @@ public class TestProjections {
     @Test
     public void test4() {
 
-        Page<McIdentifier> page = mcIdentifierRepository.findByCollectionID(
+        Page<McIdentifier> page = mcIdentifierRepository.readByCollectionID(
                 1, PageRequest.of(1, 10), McIdentifier.class);
         System.out.println(JsonUtils.obj2Json(page));
     }
