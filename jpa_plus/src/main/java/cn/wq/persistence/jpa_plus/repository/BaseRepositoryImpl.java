@@ -76,7 +76,7 @@ public class BaseRepositoryImpl<T extends BaseEntity> extends SimpleJpaRepositor
     /**
      * 设置下标参数
      *
-     * @param query nativeQuery
+     * @param query  nativeQuery
      * @param params 参数数组
      */
     private static void setParameters(Query query, Object[] params) {

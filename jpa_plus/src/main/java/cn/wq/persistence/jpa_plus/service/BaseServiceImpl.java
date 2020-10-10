@@ -229,7 +229,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity, Dao extends BaseRepo
      * @param clz    查询返回对象类型
      * @param params sql参数
      * @return List<T>
-     * @throws Exception 异常
      */
     @Override
     public List<T> executeQuery(String sql, Class<T> clz, Object... params) {

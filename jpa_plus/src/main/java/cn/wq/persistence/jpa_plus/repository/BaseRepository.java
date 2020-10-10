@@ -11,7 +11,7 @@ import java.util.List;
  * @author 万强
  * @version 1.0
  * @date 2020/7/9 10:33
- * @desc 通用Repository，继承JpaRepository
+ * @desc 通用Repository，继承JpaRepository和JpaSpecificationExecutor（可使用Specification构建动态sql）
  * <p>
  * 做了一些扩展，包含以下功能：
  * 1、灵活的执行原生sql以及参数绑定
